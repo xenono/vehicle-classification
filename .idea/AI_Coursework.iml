@@ -6,6 +6,9 @@
       <excludeFolder url="file://$MODULE_DIR$/dataset/extra_test" />
       <excludeFolder url="file://$MODULE_DIR$/dataset/training_set" />
       <excludeFolder url="file://$MODULE_DIR$/dataset/test_set" />
+      <excludeFolder url="file://$MODULE_DIR$/dataset/MORE DATA" />
+      <excludeFolder url="file://$MODULE_DIR$/dataset/raw_datasets" />
+      <excludeFolder url="file://$MODULE_DIR$/saved_models" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (expense_analyzation_csv)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

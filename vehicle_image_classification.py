@@ -24,23 +24,30 @@ class MyWidget(QtWidgets.QWidget):
         self.setup_ui()
         self.set_image()
 
-
         # Timer setup
         self.image_change_timer = QTimer(self)
         self.image_change_timer.timeout.connect(self.change_image)
         self.image_change_timer.setInterval(5000)
         self.image_change_timer.start()
 
+
     def setup_ui(self):
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
+        self.main_layout.setContentsMargins(0, 20, 0, 20)
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.image_label.setContentsMargins(0, 20, 0, 20)
+        self.image_label.setMinimumHeight(500)
         self.main_layout.addWidget(self.image_label)
 
-        bike_label = self.class_prediction_label("Bike")
+        bike_label = self.class_prediction_label("Motorbike")
         bus_label = self.class_prediction_label("Bus")
         car_label = self.class_prediction_label("Car")
         truck_label = self.class_prediction_label("Truck")
+
+        self.main_layout.setContentsMargins(10, 50, 10, 50)
+        self.main_layout.setContentsMargins(10, 50, 10, 50)
+        self.main_layout.setContentsMargins(10, 50, 10, 50)
+        self.main_layout.setContentsMargins(10, 50, 10, 50)
 
         self.main_layout.addLayout(bike_label)
         self.main_layout.addLayout(bus_label)
@@ -50,9 +57,10 @@ class MyWidget(QtWidgets.QWidget):
     def class_prediction_label(self, classname):
         layout = QtWidgets.QHBoxLayout()
         label = QLabel(classname)
-
+        label.setFixedWidth(75)
         progress_bar = QtWidgets.QProgressBar(self)
-        progress_bar.setGeometry(50, 100, 250, 30)
+        progress_bar.setGeometry(50, 100, 150, 30)
+        progress_bar.setFixedWidth(550)
         progress_bar.setValue(0)
 
         layout.addWidget(label)
@@ -85,11 +93,12 @@ class MyWidget(QtWidgets.QWidget):
 
     def set_progress_bars(self, predictions):
         progress_bars = self.findChildren(QtWidgets.QProgressBar)
-        predictions = predictions*100
+        predictions = predictions * 100
         progress_bars[1].setValue(round(predictions[1]))
         progress_bars[2].setValue(round(predictions[2]))
         progress_bars[0].setValue(round(predictions[0]))
         progress_bars[3].setValue(round(predictions[3]))
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
@@ -97,7 +106,7 @@ if __name__ == "__main__":
 
     widget = MyWidget(model)
 
-    widget.resize(800, 600)
+    widget.resize(1000, 800)
     widget.show()
 
     sys.exit(app.exec())

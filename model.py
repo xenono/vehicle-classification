@@ -1,6 +1,6 @@
 import sys  # to access the system
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, isdir
 import tensorflow as tf
 import numpy as np
 from keras import utils
@@ -16,30 +16,33 @@ class Model:
         # Preprocessing dataset
         self.train_data_gen = ImageDataGenerator(
             rescale=1. / 255,
-            shear_range=0.3,
-            zoom_range=0.3,
+            shear_range=0.2,
+            zoom_range=0.2,
             horizontal_flip=True
         )
 
         self.training_set = self.train_data_gen.flow_from_directory(
             'dataset/training_set',
             target_size=(64, 64),
-            batch_size=32,
+            batch_size=24,
             class_mode='categorical'
         )
         self.test_set = self.train_data_gen.flow_from_directory(
             'dataset/test_set',
             target_size=(64, 64),
-            batch_size=32,
+            batch_size=24,
             class_mode='categorical'
         )
         self.classes = {}
         for key, value in self.training_set.class_indices.items():
             self.classes[value] = (key[:-1] if key != "buses" else key[:-2]).capitalize()
-        if not listdir("saved_models/model"):
+        if not isdir("saved_models/model") or not listdir("saved_models/model"):
             self.model = self.construct_cnn()
         else:
             self.model = self.load_model()
+
+        # last saved model evaluation 72% ___ 25 epochs
+        self.model.evaluate(self.test_set)
 
     def construct_cnn(self):
         cnn = tf.keras.models.Sequential()
@@ -53,7 +56,7 @@ class Model:
         cnn.compile(optimizer="adam",
                     loss='categorical_crossentropy',
                     metrics=['accuracy'])
-        cnn.fit(x=self.training_set, validation_data=self.test_set, epochs=25)
+        cnn.fit(x=self.training_set, validation_data=self.test_set, epochs=20)
         cnn.save('saved_models/model')
 
         return cnn
